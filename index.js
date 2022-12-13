@@ -1,4 +1,5 @@
 const AM_DRIVERS = ['DY', 'EH', 'CH', 'FB', 'JB', 'JJ', 'MS', 'GC'];
+const SUDOKU_SIZE = 8;
 let NO_REPEAT_LINK = true;
 AM_DRIVERS.sort((a, b) => a.localeCompare(b));
 const PM_DRIVERS = ['NA', 'ON', 'CG', 'JL', 'JS', 'AF', 'ZB', '(ALT)'];
@@ -38,13 +39,44 @@ generateRouteAssignmentsButton.addEventListener('click', () => {
   clearAssignmentTables();
 
   [AM_DRIVERS, PM_DRIVERS].forEach((DRIVERS) => {
-    const sudokuKey = createSudoku(8);
+    const sudokuKey = createSudoku(SUDOKU_SIZE);
     if (sudokuKey === undefined) {
       const errorHeading = document.createElement('h2');
       errorHeading.innerText = 'Table creation failed. Please try again.';
       routeTableContainer.appendChild(errorHeading);
       return;
     }
+
+    function checkForRepeatsAcrossRows(sudokuKey) {
+      let noRepeats = true;
+      sudokuKey.forEach((row) => {
+        const set = [...new Set(row)];
+        if (set.length < SUDOKU_SIZE) {
+          noRepeats = false;
+        }
+      });
+      return noRepeats;
+    }
+
+    function checkForRepeatsAcrossColumns(sudokuKey) {
+      let noRepeats = true;
+      for (let colIndex = 0; colIndex < SUDOKU_SIZE; colIndex++) {
+        const column = sudokuKey.map((row) => row[colIndex]);
+        const set = [...new Set(column)];
+        if (set.length < SUDOKU_SIZE) {
+          noRepeats = false;
+        }
+      }
+      return noRepeats;
+    }
+
+    function checkForNoRepeats(sudokuKey) {
+      const noRepeatsAcrossRows = checkForRepeatsAcrossRows(sudokuKey);
+      const noRepeatsAcrossColumns = checkForRepeatsAcrossColumns(sudokuKey);
+      return noRepeatsAcrossColumns && noRepeatsAcrossRows;
+    }
+
+    console.log(checkForNoRepeats(sudokuKey));
 
     const routeTable = document.createElement('table');
     const routeTableBody = document.createElement('tbody');
