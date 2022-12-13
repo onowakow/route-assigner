@@ -20,18 +20,50 @@
       <div class="container-sm">
         <div class="card">
           <div class="card-body">
-            This generates a quick outline for route assignments. This factors
-            in full-time employees on routes are consistently ran routes.
+            This generates a quick outline for route assignments using the
+            following criteria:
+            <ul>
+              <li>
+                Only assign full-time drivers, using consistently ran routes.
+                Floaters and part timers will fill in for extra routes (Express
+                6) and absentees.
+              </li>
+              <li>Each driver will drive all routes before repeating.</li>
+              <li>Individual rotations must not include repeat assignments.</li>
+            </ul>
           </div>
         </div>
         <div class="mt-4">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="noRepeatLinkInput">
+            <label class="form-check-label" for="noRepeatLinkInput">No Repeat Links</label>
+          </div>
+        </div>
+        <div class="mt-2" style="display: flex; align-items: center">
           <button class="btn btn-primary" id="generateRouteAssignmentButton">
             Generate Route Assignments
           </button>
-          <button hidden class="btn btn-danger" id="clearAssignmentButton">Clear</button>
+          <div
+            id="loading"
+            hidden
+            class="spinner-border text-primary"
+            style="margin-right: 0.5rem"
+            role="status"
+          >
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <span id="loading-text" hidden>Finding assignments...</span>
+          <button
+            hidden
+            class="btn btn-danger"
+            style="margin-left: 0.5rem"
+            id="clearAssignmentButton"
+          >
+            Clear
+          </button>
         </div>
       </div>
-      <div class="container-sm mt-4" id="routeTableContainer"></div>
+      <div class="container-sm mt-4" hidden id="routeTableContainer"></div>
     </div>
   </body>
   <script src="index.js"></script>
